@@ -1079,6 +1079,225 @@ body{font-family:'Open Sans',sans-serif;background:#777;}
 <body>
 
 <!-- ══════════════════════════════════════════
+     PRINT BUTTON UI
+══════════════════════════════════════════ -->
+<style>
+  #print-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 9999;
+    background: #1a1a2e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.4);
+    font-family: 'Open Sans', Arial, sans-serif;
+    gap: 16px;
+  }
+  #print-bar .pb-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  #print-bar .pb-logo span {
+    color: #f5d018;
+    font-size: 13pt;
+    font-weight: 700;
+    letter-spacing: .5px;
+  }
+  #print-bar .pb-logo small {
+    color: rgba(255,255,255,.5);
+    font-size: 8pt;
+    display: block;
+    margin-top: 1px;
+  }
+  #print-bar .pb-info {
+    color: rgba(255,255,255,.6);
+    font-size: 8pt;
+    flex: 1;
+    text-align: center;
+  }
+  #print-bar .pb-info strong { color: rgba(255,255,255,.9); }
+  #print-bar .pb-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .pb-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 9pt;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .15s;
+    text-decoration: none;
+    font-family: inherit;
+  }
+  .pb-btn-primary {
+    background: #3bb5d5;
+    color: #fff;
+  }
+  .pb-btn-primary:hover { background: #2d9abf; transform: translateY(-1px); }
+  .pb-btn-secondary {
+    background: #b5a81a;
+    color: #fff;
+  }
+  .pb-btn-secondary:hover { background: #9a8e14; transform: translateY(-1px); }
+  .pb-btn-ghost {
+    background: rgba(255,255,255,.1);
+    color: rgba(255,255,255,.8);
+    border: 1px solid rgba(255,255,255,.2);
+  }
+  .pb-btn-ghost:hover { background: rgba(255,255,255,.2); }
+
+  /* Print instructions tooltip */
+  #print-tips {
+    display: none;
+    position: fixed;
+    top: 56px;
+    right: 24px;
+    z-index: 9998;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.2);
+    padding: 18px 20px;
+    width: 300px;
+    font-family: 'Open Sans', Arial, sans-serif;
+  }
+  #print-tips h3 {
+    font-size: 10pt;
+    color: #333;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  #print-tips ol {
+    padding-left: 18px;
+    margin: 0;
+  }
+  #print-tips ol li {
+    font-size: 8pt;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 3px;
+  }
+  #print-tips ol li strong { color: #3bb5d5; }
+  #print-tips .close-tips {
+    position: absolute;
+    top: 10px; right: 12px;
+    background: none;
+    border: none;
+    font-size: 14pt;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+  }
+  #print-tips .tip-note {
+    margin-top: 10px;
+    padding: 8px 10px;
+    background: #fff8e6;
+    border-radius: 4px;
+    font-size: 7.5pt;
+    color: #888;
+    border-left: 3px solid #b5a81a;
+  }
+
+  /* Push pages down when bar is visible */
+  body { padding-top: 52px; }
+
+  /* Hide bar when printing */
+  @media print {
+    #print-bar, #print-tips { display: none !important; }
+    body { padding-top: 0 !important; }
+    .page { margin: 0 !important; }
+  }
+</style>
+
+<!-- Print bar -->
+<div id="print-bar">
+  <div class="pb-logo">
+    <span>☀ SeaSky</span>
+    <div>
+      <small>Penthouse Brochure · 7 pages · A4</small>
+    </div>
+  </div>
+
+  <div class="pb-info">
+    <strong>Print tip:</strong> Set margins to <strong>None</strong> and enable <strong>Background graphics</strong> for best results
+  </div>
+
+  <div class="pb-actions">
+    <button class="pb-btn pb-btn-ghost" onclick="toggleTips()">
+      ℹ How to print
+    </button>
+    <button class="pb-btn pb-btn-secondary" onclick="window.print()">
+      🖨 Print Brochure
+    </button>
+    <button class="pb-btn pb-btn-primary" onclick="savePDF()">
+      ⬇ Save as PDF
+    </button>
+  </div>
+</div>
+
+<!-- Print tips panel -->
+<div id="print-tips">
+  <button class="close-tips" onclick="toggleTips()">×</button>
+  <h3>🖨 How to save as PDF</h3>
+  <ol>
+    <li>Click <strong>Save as PDF</strong> or press <strong>Ctrl+P</strong> (Cmd+P on Mac)</li>
+    <li>Set <strong>Destination</strong> → <em>Save as PDF</em></li>
+    <li>Set <strong>Paper size</strong> → <em>A4</em></li>
+    <li>Set <strong>Margins</strong> → <em>None</em></li>
+    <li>Enable <strong>Background graphics</strong> ✓</li>
+    <li>Set <strong>Scale</strong> → <em>100%</em></li>
+    <li>Click <strong>Save</strong></li>
+  </ol>
+  <div class="tip-note">
+    💡 Best results in <strong>Google Chrome</strong>. Firefox and Edge also work well.
+  </div>
+</div>
+
+<script>
+  function toggleTips() {
+    const tips = document.getElementById('print-tips');
+    tips.style.display = tips.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function savePDF() {
+    // Set document title to control PDF filename
+    const originalTitle = document.title;
+    document.title = 'SeaSky-Penthouse-Brochure';
+    window.print();
+    // Restore after print dialog
+    setTimeout(() => { document.title = originalTitle; }, 1000);
+  }
+
+  // Close tips when clicking outside
+  document.addEventListener('click', function(e) {
+    const tips = document.getElementById('print-tips');
+    const bar = document.getElementById('print-bar');
+    if (tips.style.display === 'block' && !tips.contains(e.target) && !bar.contains(e.target)) {
+      tips.style.display = 'none';
+    }
+  });
+
+  // Keyboard shortcut: Ctrl+P triggers savePDF instead
+  document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+      e.preventDefault();
+      savePDF();
+    }
+  });
+</script>
+
+
+<!-- ══════════════════════════════════════════
      PAGE 1 – COVER
 ══════════════════════════════════════════ -->
 <div class="page" id="p1">
