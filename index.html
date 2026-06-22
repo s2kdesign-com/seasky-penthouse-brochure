@@ -1154,6 +1154,12 @@ body{font-family:'Open Sans',sans-serif;background:#777;}
     border: 1px solid rgba(255,255,255,.2);
   }
   .pb-btn-ghost:hover { background: rgba(255,255,255,.2); }
+  .pb-btn-location {
+    background: #188038;
+    color: #fff;
+  }
+  .pb-btn-location:hover { background: #136b2e; transform: translateY(-1px); }
+  .pb-btn[disabled] { opacity: .65; cursor: progress; }
 
   /* Print instructions tooltip */
   #print-tips {
@@ -1224,7 +1230,7 @@ body{font-family:'Open Sans',sans-serif;background:#777;}
   <div class="pb-logo">
     <span>☀ SeaSky</span>
     <div>
-      <small>Penthouse Brochure · 7 pages · A4</small>
+      <small>Penthouse Brochure · 6 pages · A4</small>
     </div>
   </div>
 
@@ -1239,9 +1245,12 @@ body{font-family:'Open Sans',sans-serif;background:#777;}
     <button class="pb-btn pb-btn-secondary" onclick="window.print()">
       🖨 Print Brochure
     </button>
-    <button class="pb-btn pb-btn-primary" onclick="savePDF()">
+    <button id="pdf-btn" class="pb-btn pb-btn-primary" onclick="savePDF()">
       ⬇ Save as PDF
     </button>
+    <a class="pb-btn pb-btn-location" href="seasky-apartments.html" target="_blank" rel="noopener">
+      📍 Location &amp; nearby
+    </a>
   </div>
 </div>
 
@@ -1269,13 +1278,54 @@ body{font-family:'Open Sans',sans-serif;background:#777;}
     tips.style.display = tips.style.display === 'block' ? 'none' : 'block';
   }
 
-  function savePDF() {
-    // Set document title to control PDF filename
-    const originalTitle = document.title;
-    document.title = 'SeaSky-Penthouse-Brochure';
-    window.print();
-    // Restore after print dialog
-    setTimeout(() => { document.title = originalTitle; }, 1000);
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = src; s.onload = resolve; s.onerror = () => reject(new Error('load fail: ' + src));
+      document.head.appendChild(s);
+    });
+  }
+
+  async function ensureLibs() {
+    if (!window.html2canvas) {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+    }
+    if (!(window.jspdf && window.jspdf.jsPDF)) {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    }
+  }
+
+  async function savePDF() {
+    const btn = document.getElementById('pdf-btn');
+    const label = btn ? btn.innerHTML : '';
+    if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Generating PDF…'; }
+    try {
+      await ensureLibs();
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const pages = document.querySelectorAll('.page');
+      const W = 210, H = 297;
+      for (let i = 0; i < pages.length; i++) {
+        if (btn) btn.innerHTML = '⏳ Page ' + (i + 1) + '/' + pages.length + '…';
+        const canvas = await html2canvas(pages[i], {
+          scale: 2, useCORS: true, backgroundColor: '#ffffff',
+          windowWidth: pages[i].scrollWidth, windowHeight: pages[i].scrollHeight
+        });
+        const img = canvas.toDataURL('image/jpeg', 0.95);
+        if (i > 0) pdf.addPage();
+        pdf.addImage(img, 'JPEG', 0, 0, W, H);
+      }
+      pdf.save('SeaSky-Penthouse-Brochure.pdf');
+    } catch (err) {
+      // Fallback: browser print-to-PDF dialog (handles cross-origin images cleanly)
+      console.warn('Auto-PDF failed, falling back to print dialog:', err);
+      const original = document.title;
+      document.title = 'SeaSky-Penthouse-Brochure';
+      window.print();
+      setTimeout(() => { document.title = original; }, 1000);
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = label; }
+    }
   }
 
   // Close tips when clicking outside
