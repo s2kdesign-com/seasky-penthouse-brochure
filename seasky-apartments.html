@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SeaSky Penthouse — Burgas · GF98+QQ</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    background: #e8eaed;
+    color: #202124;
+    min-height: 100vh;
+  }
+  .stage {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+  .map-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://seasky-apartments.com/wp-content/uploads/2026/06/2026-06-22_01h17_08.png') center/cover no-repeat, #cfe3ef;
+    z-index: 0;
+  }
+  .card {
+    position: relative;
+    z-index: 2;
+    margin: 24px 0 24px 24px;
+    width: 408px;
+    max-width: calc(100% - 48px);
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.18);
+    overflow: hidden;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+  }
+  .card::-webkit-scrollbar { width: 8px; }
+  .card::-webkit-scrollbar-thumb { background: #dadce0; border-radius: 8px; }
+
+  .hero {
+    height: 200px;
+    background: url('https://seasky-apartments.com/wp-content/uploads/2025/03/IMG_3473-scaled.webp') center/cover no-repeat, #b9d6e8;
+    position: relative;
+  }
+  .hero .badge {
+    position: absolute; top: 12px; right: 12px;
+    background: rgba(255,255,255,.92);
+    font-size: 11px; color: #5f6368;
+    padding: 4px 10px; border-radius: 14px;
+    font-weight: 500;
+  }
+  .body { padding: 16px 20px 8px; }
+  h1.gold {
+    font-size: 24px; font-weight: 500; margin: 14px 0 2px;
+    background: linear-gradient(92deg,#bf953f 0%,#fcf6ba 30%,#b38728 55%,#fbf5b7 78%,#aa771c 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: #b38728;
+    letter-spacing: .3px;
+  }
+  .subtitle { font-size: 14px; color: #5f6368; margin-bottom: 6px; }
+  .rating { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #5f6368; margin-bottom: 4px; }
+  .rating .stars { color: #fbbc04; letter-spacing: 1px; }
+  .meta-type { font-size: 13px; color: #5f6368; margin-bottom: 14px; }
+
+  .actions { display: flex; gap: 6px; padding: 4px 12px 14px; }
+  .action {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
+    text-decoration: none; color: #1a73e8; font-size: 12px;
+    padding: 6px 2px; border-radius: 8px;
+  }
+  .action:hover { background: #f1f3f4; }
+  .action .ic {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .action.primary .ic { background: #1a73e8; color: #fff; }
+  .action:not(.primary) .ic { border: 1px solid #dadce0; color: #1a73e8; background: #fff; }
+
+  .divider { height: 1px; background: #e8eaed; margin: 0; }
+
+  .info-rows { padding: 8px 8px; }
+  .info-row {
+    display: flex; align-items: center; gap: 18px;
+    padding: 12px 12px; border-radius: 8px;
+    font-size: 14px; color: #3c4043; text-decoration: none;
+  }
+  .info-row:hover { background: #f1f3f4; }
+  .info-row .ric { color: #5f6368; font-size: 18px; width: 20px; text-align: center; }
+  .info-row a.link { color: #1a73e8; text-decoration: none; }
+
+  .qr {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 20px; border-radius: 8px;
+  }
+  .qr img {
+    width: 96px; height: 96px; border: 1px solid #e8eaed; border-radius: 8px; padding: 4px; background: #fff;
+  }
+  .qr .qr-text { font-size: 13px; color: #3c4043; }
+  .qr .qr-text strong { display: block; font-weight: 500; color: #202124; margin-bottom: 2px; }
+  .qr .qr-text a { color: #1a73e8; text-decoration: none; }
+
+  .section { padding: 14px 20px 6px; }
+  .section h2 {
+    font-size: 15px; font-weight: 500; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section.beaches h2 { color: #1a73e8; }
+  .section.attractions h2 { color: #188038; }
+  .place {
+    display: flex; align-items: center; gap: 12px;
+    padding: 7px 0; font-size: 13px;
+  }
+  .place .num {
+    width: 22px; height: 22px; flex: none; border-radius: 50%;
+    background: #f29900; color: #fff; font-size: 12px; font-weight: 500;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .attractions .place .num { background: #188038; }
+  .beaches .place .num { background: #1a73e8; }
+  .place .name { flex: 1; color: #202124; }
+  .place .name small { display: block; color: #80868b; font-size: 11px; }
+  .place .dist { color: #5f6368; white-space: nowrap; font-size: 12px; text-align: right; }
+  .section:last-child { padding-bottom: 20px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="map-bg" role="img" aria-label="Map of Burgas showing the route from SeaSky Penthouse along the Sea Garden coast"></div>
+
+  <div class="card">
+    <div class="hero">
+      <span class="badge">SeaSky Penthouse</span>
+    </div>
+
+    <div class="body">
+      <h1 class="gold">SeaSky Penthouse</h1>
+      <div class="subtitle">Modern apartments near the sea in Burgas</div>
+      <div class="rating">
+        <span>5.0</span>
+        <span class="stars">★★★★★</span>
+        <span>· Serviced apartment</span>
+      </div>
+      <div class="meta-type">Морско небе Пентхаус</div>
+    </div>
+
+    <div class="actions">
+      <a class="action primary" href="https://maps.app.goo.gl/RMfbSxYmcXqyYM4v9" target="_blank">
+        <span class="ic">➤</span><span>Directions</span>
+      </a>
+      <a class="action" href="https://maps.app.goo.gl/RMfbSxYmcXqyYM4v9" target="_blank">
+        <span class="ic">🔖</span><span>Save</span>
+      </a>
+      <a class="action" href="https://maps.app.goo.gl/RMfbSxYmcXqyYM4v9" target="_blank">
+        <span class="ic">◎</span><span>Nearby</span>
+      </a>
+      <a class="action" href="https://maps.app.goo.gl/RMfbSxYmcXqyYM4v9" target="_blank">
+        <span class="ic">📱</span><span>Send</span>
+      </a>
+      <a class="action" href="https://maps.app.goo.gl/RMfbSxYmcXqyYM4v9" target="_blank">
+        <span class="ic">↗</span><span>Share</span>
+      </a>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="info-rows">
+      <a class="info-row" href="https://maps.app.goo.gl/RMfbSxYmcXqyYM4v9" target="_blank">
+        <span class="ric">📍</span>
+        <span>g.k. Zornitsa, ж.к. Зорница 75, вход 1, Етаж 12, 8018 Burgas</span>
+      </a>
+      <a class="info-row" href="https://maps.app.goo.gl/RMfbSxYmcXqyYM4v9" target="_blank">
+        <span class="ric">⊞</span>
+        <span>GF98+QQ Burgas</span>
+      </a>
+      <a class="info-row" href="https://seasky-apartments.com" target="_blank">
+        <span class="ric">🌐</span>
+        <span class="link">seasky-apartments.com</span>
+      </a>
+      <a class="info-row" href="tel:+359888017004">
+        <span class="ric">📞</span>
+        <span>+359 888 017004</span>
+      </a>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="qr">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=0&data=https%3A%2F%2Fseasky-apartments.com"
+           alt="QR code linking to seasky-apartments.com">
+      <div class="qr-text">
+        <strong>Scan to visit our website</strong>
+        <a href="https://seasky-apartments.com" target="_blank">seasky-apartments.com</a>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section beaches">
+      <h2><span>🏖</span> Beaches &amp; Coastal Towns</h2>
+      <div class="place"><span class="num">1</span><span class="name">Pomorie</span><span class="dist">20 min · 19 km</span></div>
+      <div class="place"><span class="num">2</span><span class="name">Sunny Beach</span><span class="dist">28 min · 33 km</span></div>
+      <div class="place"><span class="num">3</span><span class="name">Nessebar</span><span class="dist">35 min · 43 km</span></div>
+      <div class="place"><span class="num">4</span><span class="name">Sozopol</span><span class="dist">45 min · 35 km</span></div>
+      <div class="place"><span class="num">5</span><span class="name">St. Anastasia Island</span><span class="dist">boat · ~9 km</span></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section attractions">
+      <h2><span>📌</span> Nearby Attractions &amp; Beach (from map)</h2>
+      <div class="place"><span class="num">B</span><span class="name">Lake Park <small>Парк Езеро</small></span><span class="dist">3 min · 1.0 km</span></div>
+      <div class="place"><span class="num">D</span><span class="name">Burgas Terarium</span><span class="dist">5 min · 2.0 km</span></div>
+      <div class="place"><span class="num">C</span><span class="name">Sand Sculptures <small>Sculpture Park</small></span><span class="dist">6 min · 2.2 km</span></div>
+      <div class="place"><span class="num">E</span><span class="name">Burgas Beach <small>Плаж Бургас</small></span><span class="dist">6 min · 2.4 km</span></div>
+      <div class="place"><span class="num">F</span><span class="name">Tourist Train Burgas</span><span class="dist">8 min · 3.0 km</span></div>
+      <div class="place"><span class="num">G</span><span class="name">Sailor Monument</span><span class="dist">9 min · 3.2 km</span></div>
+      <div class="place"><span class="num">H</span><span class="name">Neptune <small>Sea Garden</small></span><span class="dist">10 min · 3.4 km</span></div>
+      <div class="place"><span class="num">I</span><span class="name">Dock 5</span><span class="dist">11 min · 4.0 km</span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
